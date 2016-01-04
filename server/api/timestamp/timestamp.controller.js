@@ -38,8 +38,26 @@ function handleEntityNotFound(res) {
 // Request http://localhost:9000/api/timestamp/1450137601
 // Response: {"unix":1450137601,"natural":"December 15, 2015"}
 export function getDateJson(req, res) {
+  var date = new Date(isNaN(req.params.dateStr) ? req.params.dateStr : Number(req.params.dateStr));
+  var month = new Array();
+  month[0] = "January";
+  month[1] = "February";
+  month[2] = "March";
+  month[3] = "April";
+  month[4] = "May";
+  month[5] = "June";
+  month[6] = "July";
+  month[7] = "August";
+  month[8] = "September";
+  month[9] = "October";
+  month[10] = "November";
+  month[11] = "December";
+  var month = month[date.getMonth()];
+  var day = date.getUTCDate();
+  var year = date.getUTCFullYear();
+  var dateFormat = month + ' ' + day + ', ' + year;
   var data = {};
-  data.unix = Number(req.params.dateStr);
-  data.natural = null;
+  data.unix = dateFormat;
+  data.natural = dateFormat;
   return res.json(data);
 }
