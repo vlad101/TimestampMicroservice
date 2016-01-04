@@ -11,6 +11,12 @@ class MainController {
     $http.get('/api/things').then(response => {
       this.awesomeThings = response.data;
     });
+
+    // $http.get('/api/things/dateService/' + '1450137600').then(response => {
+    //   console.log(response.data);
+    //   this.dateJson = response.data;
+    //   Access 
+    // });
   }
 
   addThing() {

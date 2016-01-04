@@ -1,6 +1,7 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
  * GET     /api/things              ->  index
+ * GET     /api/things/:dateStr     ->  getDateJson
  * POST    /api/things              ->  create
  * GET     /api/things/:id          ->  show
  * PUT     /api/things/:id          ->  update
