@@ -1,22 +1,32 @@
-<navbar></navbar>
+<!-- <navbar></navbar> -->
 
-<header class="hero-unit" id="banner">
+<header>
   <div class="container">
-    <!-- <h1>'Allo, 'Allo!</h1> -->
-    <p class="lead">Kick-start your next web app with Angular Fullstack</p>
-    <!-- <img src="assets/images/yeoman.png" alt="I'm Yeoman"> -->
+    <br><p class="lead">API Basejump: Timestamp microservice</p>
   </div>
 </header>
 
 <div class="container">
-  <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Features:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in main.awesomeThings">
-        <li><a href="#" tooltip="{{thing.info}}">{{thing.name}}</a></li>
-      </ul>
-    </div>
-  </div>
+    <blockquote>
+      Instructions:
+      <ol>
+        <li>Pass a string as a parameter, and it will check to see whether that string 
+        contains either a unix timestamp or a natural language date (example: January 1, 2016)</li>
+        <li>If it does, it returns both the Unix timestamp and the natural language form of that date.</li>
+        <li>If it does not contain a date or Unix timestamp, it returns null for those properties.</li>
+      </ol>
+    </blockquote>
+    <h3>Example usage:</h3>
+    <code>http://{{main.host}}<span ng-show="main.port">:{{main.port}}</span>/api/timestamp/December%2015,%202015</code><br>
+    <code>http://{{main.host}}<span ng-show="main.port">:{{main.port}}</span>/api/timestamp/1450137600</code>
+    
+    <h3>Example output:</h3>
+    <code>
+        {
+          "unix": 1450137600,
+          "natural": "December 15, 2015"
+        }
+    </code>
 </div>
 
 <footer></footer>

@@ -5,59 +5,50 @@
 
 'use strict';
 
-import _ from 'lodash';
-var Timestamp = require('./timestamp.model');
-
-function handleError(res, statusCode) {
-  statusCode = statusCode || 500;
-  return function(err) {
-    res.status(statusCode).send(err);
-  };
-}
-
-function responseWithResult(res, statusCode) {
-  statusCode = statusCode || 200;
-  return function(entity) {
-    if (entity) {
-      res.status(statusCode).json(entity);
-    }
-  };
-}
-
-function handleEntityNotFound(res) {
-  return function(entity) {
-    if (!entity) {
-      res.status(404).end();
-      return null;
-    }
-    return entity;
-  };
-}
-
 // Gets Date service
-// Request http://localhost:9000/api/timestamp/1450137601
-// Response: {"unix":1450137601,"natural":"December 15, 2015"}
+// Request http://localhost:9000/api/timestamp/1451970000
+// Request http://localhost:9000/api/timestamp/January 5, 2016
+// Response: {"unix":1451970000,"natural":"January 5, 2016"}
 export function getDateJson(req, res) {
-  var date = new Date(isNaN(req.params.dateStr) ? req.params.dateStr : Number(req.params.dateStr));
-  var month = new Array();
-  month[0] = "January";
-  month[1] = "February";
-  month[2] = "March";
-  month[3] = "April";
-  month[4] = "May";
-  month[5] = "June";
-  month[6] = "July";
-  month[7] = "August";
-  month[8] = "September";
-  month[9] = "October";
-  month[10] = "November";
-  month[11] = "December";
-  var month = month[date.getMonth()];
-  var day = date.getUTCDate();
-  var year = date.getUTCFullYear();
-  var dateFormat = month + ' ' + day + ', ' + year;
   var data = {};
-  data.unix = dateFormat;
-  data.natural = dateFormat;
+  var unixDate = null;
+  var naturalDate = 'Invalid Date';
+
+  if(isNaN(req.params.dateStr)) {
+    if(req.params.dateStr == null || !isValidDateFormat(req.params.dateStr)) {
+      unixDate = null;
+      naturalDate = null;  
+    } else {
+      unixDate = naturalToUnixDateConverter(req.params.dateStr);
+      naturalDate = req.params.dateStr;
+    }
+  } else {
+    unixDate = Number(req.params.dateStr)
+    naturalDate = unixToNaturalDateConverter(Number(req.params.dateStr));
+  }
+
+  data.unix = unixDate;
+  data.natural = naturalDate;
   return res.json(data);
+}
+
+function unixToNaturalDateConverter(UNIX_timestamp){
+  var a = new Date(UNIX_timestamp * 1000);
+  var months = [ "January", "February", "March", "April", "May", "June", 
+            "July", "August", "September", "October", "November", "December"];
+  var year = a.getFullYear();
+  var month = months[a.getMonth()];
+  var date = a.getDate();
+  var time = month + ' ' + date + ', ' + year;
+  return time;
+}
+
+function naturalToUnixDateConverter(natural_timestamp){
+  return Date.parse(natural_timestamp) / 1000;
+}
+
+function isValidDateFormat(natural_timestamp) {
+  if(new Date(natural_timestamp) == 'Invalid Date')
+    return false;
+  return true;
 }
